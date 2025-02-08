@@ -1,7 +1,20 @@
+//degugging database problem
+console.log("tietokannan luominen aloitetaan")
+
 const sqlite3 = require('sqlite3').verbose();
 
+//degugging database problem
+console.log("Script is running...");
+
 // Luo tietokanta tai avaa olemassa oleva
-let db = new sqlite3.Database('./menot.db');
+let db = new sqlite3.Database('./menot.db', (err) => {
+    if (err) {
+        console.error("virhe tietokantaan yhdistämisessä: ", err.message);
+    } else {
+        console.log("yhdistetty tietokantaan")
+    }
+});
+
 
 
 // Luo taulu

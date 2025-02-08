@@ -1,3 +1,6 @@
+// tietokantaongelman selvitystä
+console.log("menotServer.js on toiminnassa")
+
 const express = require('express');
 const app = express();
 
@@ -16,7 +19,13 @@ const sqlite3 = require('sqlite3');
 const port = 8080;
 
 // Open database
-const db = new sqlite3.Database('./menot.db');
+const db = new sqlite3.Database('./menot.db', (err) => {
+    if (err) {
+        console.error("virhe tietokannan avaamisessa: ", err.message);
+    } else {
+        console.log("yhdistetty tietokantaan")
+    }
+});
 
  
 // Create table if not exists
@@ -141,12 +150,11 @@ app.get('/download/:nimi', (req, res) => {
     res.download(file);
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
-
 app.get('*', (req, res) => {
     return res.status(404).json({ message: 'Ei pyydettyä palvelua' });
 });
 
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
